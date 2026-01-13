@@ -1,7 +1,5 @@
 # CLIP-Semart-Project
 
-# CLIP-Semart-Project
-
 ## Project Overview
 This project explores the robustness of the CLIP (Contrastive Language-Image Pre-training) model for artist attribution in artwork classification using the SemArt dataset. The study investigates how various image transformations affect CLIP's ability to correctly identify artists based on visual features.
 
@@ -59,14 +57,6 @@ The experiments reveal how different visual features contribute to CLIP's artist
 ├── grayscale_results_df.csv               # Grayscale conversion experiment results
 └── README.md                              # This file
 ```
-
-## Technologies Used
-- **CLIP**: OpenAI's Contrastive Language-Image Pre-training model
-- **Python**: Primary programming language
-- **Jupyter Notebooks**: Interactive development and analysis
-- **Pandas**: Data manipulation and analysis
-- **Matplotlib**: Data visualization
-- **Image Processing Libraries**: For applying transformations
 
 ## Usage
 1. Clone this repository
