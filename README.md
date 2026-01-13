@@ -5,7 +5,7 @@ This project explores the robustness of the CLIP (Contrastive Language-Image Pre
 
 ## Dataset
 The project uses the **SemArt dataset**, which contains:
-- **19,244 artworks** with complete metadata
+- **20,798 artworks** with complete metadata
 - 9 columns: IMAGE_FILE, DESCRIPTION, AUTHOR, TITLE, TECHNIQUE, DATE, TYPE, SCHOOL, TIMEFRAME
 - Distribution across different artistic periods (TIMEFRAME)
 - Multiple artistic schools (Italian School, Flemish School, etc.)
