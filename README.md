@@ -1,77 +1,132 @@
-# CLIP-Semart-Project
+# Robustness of Pre-Trained CLIP for Artist Prediction Under Visual Transformations
 
-## Project Overview
-This project explores the robustness of the CLIP (Contrastive Language-Image Pre-training) model for artist attribution in artwork classification using the SemArt dataset. The study investigates how various image transformations affect CLIP's ability to correctly identify artists based on visual features.
+This repository contains the code, experiments, and analysis for the project **“Robustness of Pre-Trained CLIP for Artist Predictions Under Visual Transformations”**, conducted as part of the *Applied AI Research Seminar* at the University of Amsterdam.
 
-## Dataset
-The project uses the **SemArt dataset**, which contains:
-- **20,798 artworks** with complete metadata
-- 9 columns: IMAGE_FILE, DESCRIPTION, AUTHOR, TITLE, TECHNIQUE, DATE, TYPE, SCHOOL, TIMEFRAME
-- Distribution across different artistic periods (TIMEFRAME)
-- Multiple artistic schools (Italian School, Flemish School, etc.)
-- Various artwork types (paintings, sculptures, etc.)
+The project investigates how robust a **pre-trained CLIP model** is when performing **zero-shot artist attribution** on fine-art paintings under different visual transformations.
 
-## Methodology
-We conducted three main experiments to test CLIP's robustness under different image transformations:
+---
 
-### 1. Elastic Deformation Experiment
-- Applied elastic distortions to artwork images
-- Tested whether CLIP can maintain artist attribution despite geometric transformations
-- Results stored in `elastic_results_df.csv`
+## 📌 Project Overview
 
-### 2. Perspective Transformation Experiment  
-- Applied perspective transformations to simulate different viewing angles
-- Evaluated CLIP's invariance to viewpoint changes
-- Results stored in `perspective_results_df.csv`
+CLIP (Contrastive Language–Image Pretraining) enables zero-shot image classification by aligning image and text embeddings in a shared representation space. While CLIP has shown strong performance on general vision–language tasks, its robustness in **fine-grained art attribution** remains underexplored.
 
-### 3. Grayscale Conversion Experiment
-- Converted colored artworks to grayscale
-- Assessed the importance of color information for artist attribution
-- Results stored in `grayscale_results_df.csv`
+In this project, we evaluate:
+- Zero-shot artist prediction using CLIP
+- The impact of **visual transformations** on prediction accuracy
+- Which visual cues CLIP relies on most when identifying artists
 
-## Key Results
-Each experiment tracked:
-- **Original prediction**: CLIP's predicted artist on original images
-- **Original confidence**: Confidence score for the original prediction
-- **Transformed prediction**: Predicted artist after transformation
-- **Transformed confidence**: Confidence score after transformation
-- **Still correct**: Boolean indicating if the prediction remained accurate
+---
 
-### Summary of Findings
-The experiments reveal how different visual features contribute to CLIP's artist attribution capabilities:
-- **Elastic deformations** impact geometric features
-- **Perspective changes** test viewpoint invariance
-- **Grayscale conversion** isolates the role of color vs. form
+## 🖼️ Dataset
 
-## Repository Structure
-```
-├── AI_Research_Semart.ipynb              # Research analysis notebook
-├── Ai_project.ipynb                       # Main project notebook
-├── Ai_project_perspective_experiments.ipynb  # Perspective transformation experiments
-├── descriptive_statistics.ipynb           # Dataset statistical analysis
-├── merge_dataset.ipynb                    # Dataset merging utilities
-├── merge_dataset_updated.ipynb            # Updated dataset merging
-├── semart_full.csv                        # Complete SemArt dataset
-├── elastic_results_df.csv                 # Elastic deformation experiment results
-├── perspective_results_df.csv             # Perspective transformation experiment results
-├── grayscale_results_df.csv               # Grayscale conversion experiment results
-└── README.md                              # This file
-```
+We use the **SemArt dataset**, a collection of European fine-art paintings from the **13th to 19th century**, originally developed by Aston University.
 
-## Usage
-1. Clone this repository
-2. Install required dependencies
-3. Open the Jupyter notebooks to explore the experiments
-4. Review the CSV files for detailed results
+After data cleaning:
+- **20,798 paintings**
+- **3,253 artists**
+- Evaluation focused on the **top 100 most prolific artists**
 
-## Future Work
-- Test additional transformation types
-- Expand to more artists and artistic styles
-- Compare CLIP's performance with other vision models
-- Investigate the impact of training data on robustness
+Metadata includes:
+- Artist (author)
+- Artwork type
+- School (origin country)
+- Timeframe
+- Technique
 
-## Contributors
-This project is part of AI research on computer vision models for art analysis.
+---
 
-## License
-Please refer to the SemArt dataset license for data usage terms.
+## 🤖 Model
+
+- **Model:** Pre-trained CLIP (ViT-B/32)
+- **Setting:** Zero-shot classification
+- **Fine-tuning:** None
+- **Prompt format:**  
+  `"a painting by [artist name]"`
+
+Artist prediction is performed by selecting the artist whose text embedding has the **highest cosine similarity** with the image embedding.
+
+---
+
+## 🔁 Visual Transformations
+
+To assess robustness, three transformations were applied **only to paintings correctly classified in the baseline setting**:
+
+1. **Grayscale Transformation**  
+   Removes color information to test reliance on chromatic cues.
+
+2. **Random Perspective Transformation**  
+   Applies geometric distortions to simulate viewpoint and framing changes.
+
+3. **Elastic Transformation**  
+   Introduces non-rigid, local deformations to test sensitivity to fine-grained geometry.
+
+Each transformation alters visual appearance while preserving semantic content.
+
+---
+
+## 📊 Key Results
+
+### Baseline (No Transformation)
+- **Accuracy:** 29.56%
+- **Macro F1-score:** 0.23
+- **Correct predictions:** 2,339 / 7,913 paintings
+- Predictions span **76 artists**
+
+### Post-Transformation Robustness  
+(Computed on the 2,339 correctly classified paintings)
+
+| Transformation | Accuracy |
+|---------------|----------|
+| Grayscale     | 65.3%    |
+| Random Perspective | 59.9% |
+| Elastic       | 40.2%    |
+
+**Key findings:**
+- CLIP is most robust to **color removal**
+- Performance degrades under **geometric distortions**
+- **Elastic transformations** have the strongest negative impact
+- Confidence scores do not always align with prediction correctness
+
+---
+
+## 🧠 Conclusions
+
+- Pre-trained CLIP shows **moderate zero-shot performance** for artist attribution
+- CLIP relies more on **structural and compositional features** than color
+- Non-rigid distortions significantly degrade performance
+- Robustness varies strongly across artists
+
+These findings highlight limitations of CLIP for fine-grained art attribution and motivate future work on task-specific fine-tuning and robustness-aware training.
+
+---
+
+## ⚠️ Limitations
+
+- Limited computational resources
+- Transformations applied only to correctly predicted samples
+- No fine-tuning or prompt optimization
+- Evaluation focuses on robustness rather than full multi-class performance
+
+---
+
+
+## 📄 Report
+
+The full academic report (LNCS format) is available in the repository
+
+## 👥 Authors
+
+- **Shaoxuan Shi**
+- **Emre Genç**
+- **Linh Khanh Nguyen**
+- **Bedirhan Gursoy**
+
+University of Amsterdam
+
+---
+
+## 📜 License & Disclaimer
+
+This repository is for **academic and research purposes only**.  
+All artworks belong to their respective rights holders.  
+CLIP is used under its original license.
