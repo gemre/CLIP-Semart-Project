@@ -41,7 +41,7 @@ Metadata includes:
 - **Setting:** Zero-shot classification
 - **Fine-tuning:** None
 - **Prompt format:**  
-  `"a painting by [artist name]"`
+  `"[artist name]"`
 
 Artist prediction is performed by selecting the artist whose text embedding has the **highest cosine similarity** with the image embedding.
 
